@@ -1,3 +1,16 @@
+data "aws_ami" "amazon_linux" { 
+  most_recent = true 
+  owners = ["amazon"] 
+  filter { 
+    name = "name" 
+    values = ["al2023-ami-2023.*-x86_64"] 
+    } 
+  filter { 
+    name = "virtualization-type" 
+    values = ["hvm"] 
+    } 
+  }
+
 resource "aws_security_group" "app_sg" {
   name        = "devops-demo-app-sg"
   description = "Allow SSH and app traffic"
@@ -27,8 +40,9 @@ resource "aws_security_group" "app_sg" {
 }
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-0453ec754f44f9a4a"
+  ami = data.aws_ami.amazon_linux.id
   instance_type = "t2.micro"
+  key_name = "devops-deploy-key"
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
 
