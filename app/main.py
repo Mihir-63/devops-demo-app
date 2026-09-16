@@ -15,7 +15,7 @@ def health():
 @app.route("/")
 def index():
     return jsonify(
-        message="Hello from the DevOps demo app 2!",
+        message="Hello from DevOps demo app 2!",
         version=APP_VERSION,
         hostname=socket.gethostname(),
         env=os.getenv("APP_ENV", "local"),
